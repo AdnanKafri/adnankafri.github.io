@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "lang": "en",
+      "consoleErrors": [],
+      "footer": [
+        "file:///C:/Users/Asus/Desktop/Adnan-Profile/index.html#home",
+        "mailto:adnanzz444@gmail.com",
+        "https://github.com/AdnanKafri",
+        "https://linkedin.com/in/adnan-kafri-75021131b",
+        "https://wa.me/963952749458",
+        "file:///C:/Users/Asus/Desktop/Adnan-Profile/index.html#home"
+      ]
+    },
+    {
+      "lang": "ar",
+      "consoleErrors": [],
+      "footer": [
+        "file:///C:/Users/Asus/Desktop/Adnan-Profile/ar/index.html#home",
+        "mailto:adnanzz444@gmail.com",
+        "https://github.com/AdnanKafri",
+        "https://linkedin.com/in/adnan-kafri-75021131b",
+        "https://wa.me/963952749458",
+        "file:///C:/Users/Asus/Desktop/Adnan-Profile/ar/index.html#home"
+      ]
+    }
+  ],
+  "interactions": {
+    "api": true,
+    "copyEmail": true,
+    "copyCitation": true,
+    "draftRetention": true,
+    "theme": true,
+    "motion": true,
+    "projects": true,
+    "mobileEscape": true
+  }
+}

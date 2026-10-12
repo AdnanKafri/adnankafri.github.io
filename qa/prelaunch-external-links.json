@@ -1,0 +1,27 @@
+[
+  {
+    "url": "https://github.com/AdnanKafri",
+    "status": 200,
+    "final": "https://github.com/AdnanKafri"
+  },
+  {
+    "url": "https://linkedin.com/in/adnan-kafri-75021131b",
+    "status": 200,
+    "final": "https://linkedin.com/in/adnan-kafri-75021131b"
+  },
+  {
+    "url": "https://doi.org/10.11648/j.aas.20261101.11",
+    "status": 200,
+    "final": "https://www.sciencepublishinggroup.com/article/10.11648/j.aas.20261101.11"
+  },
+  {
+    "url": "https://aladhamedu.com",
+    "status": 200,
+    "final": "https://aladhamedu.com/ar"
+  },
+  {
+    "url": "https://wa.me/963952749458",
+    "status": 200,
+    "final": "https://api.whatsapp.com/send/?phone=963952749458&text&type=phone_number&app_absent=0"
+  }
+]

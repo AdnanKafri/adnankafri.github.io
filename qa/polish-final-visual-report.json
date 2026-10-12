@@ -1,0 +1,194 @@
+[
+  {
+    "lang": "en",
+    "theme": "dark",
+    "width": 390,
+    "opacities": [
+      "1",
+      "1",
+      "1",
+      "1",
+      "0"
+    ],
+    "spotlight": null,
+    "photoLoaded": true,
+    "scrim": "linear-gradient(rgba(0, 0, 0, 0), rgba(20, 20, 19, 0.9) 58%, rgb(20, 20, 19))"
+  },
+  {
+    "lang": "en",
+    "theme": "dark",
+    "width": 768,
+    "opacities": [
+      "1",
+      "1",
+      "1",
+      "1",
+      "1"
+    ],
+    "spotlight": null,
+    "photoLoaded": true,
+    "scrim": "linear-gradient(rgba(0, 0, 0, 0), rgba(20, 20, 19, 0.9) 58%, rgb(20, 20, 19))"
+  },
+  {
+    "lang": "en",
+    "theme": "dark",
+    "width": 1440,
+    "opacities": [
+      "1",
+      "1",
+      "1",
+      "1",
+      "1"
+    ],
+    "spotlight": {
+      "x": "215.32000732421875px",
+      "opacity": "1"
+    },
+    "photoLoaded": true,
+    "scrim": "linear-gradient(rgba(0, 0, 0, 0), rgba(20, 20, 19, 0.9) 58%, rgb(20, 20, 19))"
+  },
+  {
+    "lang": "en",
+    "theme": "light",
+    "width": 390,
+    "opacities": [
+      "1",
+      "1",
+      "1",
+      "1",
+      "0"
+    ],
+    "spotlight": null,
+    "photoLoaded": true,
+    "scrim": "linear-gradient(rgba(0, 0, 0, 0), rgba(20, 20, 19, 0.9) 58%, rgb(20, 20, 19))"
+  },
+  {
+    "lang": "en",
+    "theme": "light",
+    "width": 768,
+    "opacities": [
+      "1",
+      "1",
+      "1",
+      "1",
+      "1"
+    ],
+    "spotlight": null,
+    "photoLoaded": true,
+    "scrim": "linear-gradient(rgba(0, 0, 0, 0), rgba(20, 20, 19, 0.9) 58%, rgb(20, 20, 19))"
+  },
+  {
+    "lang": "en",
+    "theme": "light",
+    "width": 1440,
+    "opacities": [
+      "1",
+      "1",
+      "1",
+      "1",
+      "1"
+    ],
+    "spotlight": {
+      "x": "215.32000732421875px",
+      "opacity": "1"
+    },
+    "photoLoaded": true,
+    "scrim": "linear-gradient(rgba(0, 0, 0, 0), rgba(20, 20, 19, 0.9) 58%, rgb(20, 20, 19))"
+  },
+  {
+    "lang": "ar",
+    "theme": "dark",
+    "width": 390,
+    "opacities": [
+      "1",
+      "1",
+      "1",
+      "1",
+      "1"
+    ],
+    "spotlight": null,
+    "photoLoaded": true,
+    "scrim": "linear-gradient(rgba(0, 0, 0, 0), rgba(20, 20, 19, 0.9) 58%, rgb(20, 20, 19))"
+  },
+  {
+    "lang": "ar",
+    "theme": "dark",
+    "width": 768,
+    "opacities": [
+      "1",
+      "1",
+      "1",
+      "1",
+      "1"
+    ],
+    "spotlight": null,
+    "photoLoaded": true,
+    "scrim": "linear-gradient(rgba(0, 0, 0, 0), rgba(20, 20, 19, 0.9) 58%, rgb(20, 20, 19))"
+  },
+  {
+    "lang": "ar",
+    "theme": "dark",
+    "width": 1440,
+    "opacities": [
+      "1",
+      "1",
+      "1",
+      "1",
+      "1"
+    ],
+    "spotlight": {
+      "x": "215.3262939453125px",
+      "opacity": "1"
+    },
+    "photoLoaded": true,
+    "scrim": "linear-gradient(rgba(0, 0, 0, 0), rgba(20, 20, 19, 0.9) 58%, rgb(20, 20, 19))"
+  },
+  {
+    "lang": "ar",
+    "theme": "light",
+    "width": 390,
+    "opacities": [
+      "1",
+      "1",
+      "1",
+      "1",
+      "1"
+    ],
+    "spotlight": null,
+    "photoLoaded": true,
+    "scrim": "linear-gradient(rgba(0, 0, 0, 0), rgba(20, 20, 19, 0.9) 58%, rgb(20, 20, 19))"
+  },
+  {
+    "lang": "ar",
+    "theme": "light",
+    "width": 768,
+    "opacities": [
+      "1",
+      "1",
+      "1",
+      "1",
+      "1"
+    ],
+    "spotlight": null,
+    "photoLoaded": true,
+    "scrim": "linear-gradient(rgba(0, 0, 0, 0), rgba(20, 20, 19, 0.9) 58%, rgb(20, 20, 19))"
+  },
+  {
+    "lang": "ar",
+    "theme": "light",
+    "width": 1440,
+    "opacities": [
+      "1",
+      "1",
+      "1",
+      "1",
+      "1"
+    ],
+    "spotlight": {
+      "x": "215.3262939453125px",
+      "opacity": "1"
+    },
+    "photoLoaded": true,
+    "scrim": "linear-gradient(rgba(0, 0, 0, 0), rgba(20, 20, 19, 0.9) 58%, rgb(20, 20, 19))"
+  }
+]

@@ -1,0 +1,1 @@
+{"name":"adnan-kafri-portfolio","private":true,"type":"module","scripts":{"build":"node tools/build.mjs","serve":"node tools/serve.mjs"},"devDependencies":{"jsdom":"26.1.0"}}

@@ -1,0 +1,23 @@
+{
+  "name": "Adnan Kafri | عدنان كفري",
+  "short_name": "Adnan Kafri",
+  "start_url": "./",
+  "scope": "./",
+  "display": "browser",
+  "background_color": "#141413",
+  "theme_color": "#141413",
+  "icons": [
+    {
+      "src": "assets/logo-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

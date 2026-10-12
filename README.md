@@ -1,53 +1,36 @@
-# Adnan Kafri / The backend, made visible
+# Adnan Kafri portfolio
 
-A complete, buildless personal portfolio. Electric lime, warm clay, and ink; a warm paper palette in light mode. Syne display type, Inter body type, IBM Plex Mono technical details, and Cairo for Arabic.
+This is the maintenance workspace. **Upload only the contents of `deploy/` or `adnan-kafri-deploy.zip`.** See [DEPLOY.md](DEPLOY.md) for the exact GitHub web/Git upload steps, Pages settings, live checks, indexing and custom-domain procedure. Nothing must be edited before uploading.
 
-## Open or deploy
+## Edit and regenerate
 
-Open `index.html` directly, or run `python -m http.server 8080` in this folder and visit http://localhost:8080. No installation or build is required.
+Use Node.js 22+ and Python 3 in this working folder:
 
-- **GitHub Pages:** Upload `index.html`, `css/`, `js/`, and `assets/` to a repository. In Settings → Pages, select Deploy from a branch, your branch, and `/ (root)`. Save and use the URL GitHub provides.
-- **Netlify:** Upload a folder containing those files to manual deploy. For a connected repository, leave the build command empty and use `.` for the publish directory.
+```sh
+npm ci
+npm run build
+python tools/package.py
+npm run serve
+```
 
-The supplied archive contains all required source and assets. The large original `photo.jpg` and the backup archive are not needed for deployment.
+Open `http://127.0.0.1:8080/` or `/ar/`. This preview server enforces case-sensitive paths and returns the custom error document with HTTP 404 for missing routes. Opening `index.html` or `ar/index.html` directly also supports language switching through explicit filenames. The error page requires HTTP hosting because its assets deliberately use root-absolute paths.
 
-## Files
+Edit `js/content.js` for English/Arabic copy, skills, experience, shared contacts and projects. Edit `tools/template.html` for the shared page structure. Regenerate after edits and upload both HTML pages so served text and runtime content agree. Keep this maintenance folder: the clean upload ZIP intentionally excludes tools and development dependencies.
 
-- `index.html` — complete semantic page, English HTML fallback, metadata, Person schema, and native command/copy dialogs.
-- `css/styles.css` — the complete design, breakpoints, light/dark palettes, motion, RTL and accessibility styles.
-- `js/content.js` — reviewed English and professional Modern Standard Arabic copy, complete CV skills, role responsibilities, project settings, and interface text under `PORTFOLIO.system`.
-- `js/main.js` — rendering, profile demonstration, diagrams, command palette, theme/language persistence, motion controls, clipboard handling, shared form validation, and email/WhatsApp drafts.
-- `assets/adnan.webp` — your existing optimized photo, preserved.
-- `assets/ak-logo.png` — the supplied AK logo, preserved. `logo-16.png`, `logo-32.png`, `logo-180.png`, `logo-192.png`, `logo-384.png`, and `logo-512.png` are generated variants on a dark backing for consistent visibility in both themes.
-- `assets/favicon.ico` — 16/32/48-pixel ICO; the 180-pixel PNG is the Apple touch icon.
-- `assets/social-preview.png` — 1200×630 social image featuring the new logo. The old mark has been removed from the site and assets.
-- `VERIFICATION.md` — real-browser results and remaining verification limits.
-- `REFINEMENT.md` — section-by-section changes, Arabic copy examples, and additional UI fixes.
+Optional project fields are `image`, `liveUrl` and `repoUrl`. Set them only when you have a real asset or URL. Empty fields produce no links, labels or frames; authentic architecture diagrams remain. Image paths are relative to this folder, with localized alt text under each language's project data.
 
-## Interactions
+## Behavior and assets
 
-- The hero types `GET /api/adnan` and returns role, stack, location, and availability from the real content data. It is explicitly a local demonstration, not a backend request. Run again replays it.
-- Ctrl/Cmd+K opens a searchable command menu. Use arrows and Enter to jump to a section, switch language/theme, copy email, or open GitHub/WhatsApp. Escape closes the native dialog. The navbar button works on mobile.
-- Project headings expand/collapse full-width panels with accessible, animated SVG architecture diagrams. The featured project starts open. On mobile, diagrams reflow vertically; Arabic mirrors their coordinates and flow without reversing the text.
-- Fine-pointer desktops get a dot/ring cursor, spotlight cards, magnetic buttons, a subtle featured-diagram tilt, and navigation text scramble. Mobile uses native touch behavior and simpler motion.
-- The experience rail follows scroll progress. GSAP reveals content and animates the real 3+ and 5-year facts. Lenis smooths desktop wheel scrolling; mobile uses native scrolling.
-- Copy citation/email uses the clipboard on supported secure origins. When unavailable, a selectable-text dialog provides a manual copy fallback.
-- The motion control pauses the marquee, mesh, cursor, typing, and diagram animations and removes scroll animation/smoothing. Reduced-motion preferences automatically use a static, readable experience. English and dark mode are first-visit defaults; user preferences persist when storage is available.
-- The contact form opens a prepared `mailto:` draft. It does not send messages or claim a server submission. A configured email application is needed; the direct email link remains available.
-- Send via WhatsApp uses the same inline name/email/message validation, then opens `https://wa.me/963952749458?text=…` in a new tab with `noopener noreferrer`. The draft follows the selected language and preserves encoded line breaks. The visitor reviews and sends it in WhatsApp. Direct WhatsApp links also appear in the contact section and footer.
+The single Skills section measures each original list and repeats it to fill more than twice the visible width. It recalculates after resizing and font loading, and translates one exact cycle width. Copies are aria-hidden. All chips have consistent height, padding and font size; core technologies use accent, border and weight. Hover/focus, row controls and global pause remain available. Reduced motion shows the original wrapped lists without visible copies.
 
-## Editing and replacements
+Language links explicitly target `ar/index.html` and `../index.html`. Canonical, hreflang, Open Graph and sitemap URLs remain clean `/` and `/ar/`. The switch animates and stores a preference but never automatically redirects a requested page. A contact draft is carried across the switch using sessionStorage.
 
-1. Set each project's `image`, `live`, and `github` in `PORTFOLIO.projects` inside `js/content.js`. Missing values deliberately display labeled placeholders. Diagrams are explanatory schematics, not fabricated screenshots.
-2. The photo is already included. Replace `assets/adnan.webp` only if you want another image, and update `portraitAlt` in both languages.
-3. Set a public domain after deployment: add a canonical link and `og:url`; make `og:image`, `twitter:image`, and the JSON-LD image absolute URLs. The included logo social preview is ready to use, or replace it with a custom 1200×630 image.
-4. Your logo and photo are already integrated. No placeholder logo remains.
-5. All runtime copy is in `content.js`. The English content is also in HTML as a no-JavaScript fallback. If you later change facts, update that HTML fallback too. The optional workspace utility `qa/update-static.cjs` can regenerate it using jsdom; it is not a deployment/build requirement. With JavaScript disabled, direct contact links remain available and the scripted form is hidden.
+The independent error page comes from `tools/error.html`, `js/error-page.js` and `css/error.css`. It loads no homepage JS. Paths beginning `/ar/` emphasize Arabic; a saved theme is applied before styles paint. All loaded assets and home links are rooted at `/`, so deep missing paths and a future custom domain work with the same document.
 
-## Dependencies and resilience
+The email and WhatsApp controls validate input and prepare an encoded draft for the visitor to review and send. No message is sent by the site. The supplied portrait, real links, CV facts, logo-derived palette, timeline, citation, diagrams and other retained interactions are unchanged.
 
-Pinned CDN scripts: GSAP 3.14.2, ScrollTrigger 3.14.2, Lenis 1.3.26; Tailwind's browser CDN as requested. Google Fonts supplies the fonts. The full layout is in local CSS and the content/controls are local JavaScript, so blocked animation/font CDNs fall back to the native page and system fonts.
+Fonts are self-hosted with licenses and font-display swap. GSAP/ScrollTrigger 3.14.2 and Lenis 1.3.26 use pinned URLs, SHA-384 integrity and defer. If changing CDN versions, run `node tools/update-cdn-integrity.mjs`, then rebuild. Design tokens remain at the top of `css/styles.css`.
 
-Reference documentation: [GSAP ScrollTrigger](https://gsap.com/docs/v3/Plugins/ScrollTrigger/), [Lenis](https://github.com/darkroomengineering/lenis).
+`SITE_URL` in `site.config.json` supplies generated SEO URLs. Use `node tools/set-domain.mjs <HTTPS-origin>` for a purchased domain, then `python tools/package.py` and upload the refreshed files. This does not configure DNS. The deployment guide covers the remaining steps.
 
-The prior versions are preserved separately in the workspace as `Adnan-Kafri-Portfolio-original.zip` and `Adnan-Kafri-Portfolio-before-refinement.zip`. These backups and the `qa/` evidence folder are excluded from the deployment ZIP.
+Current verification is recorded in `polish-report.md`. The earlier pre-launch report is a historical snapshot. QA and dependencies are working files and are excluded from the upload package.

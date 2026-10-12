@@ -1,0 +1,40 @@
+{
+  "method": "8-color median-cut quantization; alpha > 220; 300px sample",
+  "dominant": [
+    {
+      "count": 4407,
+      "hex": "#d5d0c9"
+    },
+    {
+      "count": 3201,
+      "hex": "#c6c2bd"
+    },
+    {
+      "count": 2753,
+      "hex": "#f3ecda"
+    },
+    {
+      "count": 2719,
+      "hex": "#e8dfd1"
+    },
+    {
+      "count": 2283,
+      "hex": "#bfb5a7"
+    },
+    {
+      "count": 1721,
+      "hex": "#856849"
+    },
+    {
+      "count": 1045,
+      "hex": "#e2d6c3"
+    },
+    {
+      "count": 947,
+      "hex": "#d6c9b8"
+    }
+  ],
+  "goldHighlight": "#f8d090",
+  "bronzeAccessibleVariant": "#78501e",
+  "silver": "#d5d0c9"
+}

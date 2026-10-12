@@ -11,38 +11,38 @@
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const finePointer = matchMedia('(hover: hover) and (pointer: fine) and (min-width: 851px)');
   const mobile = matchMedia('(max-width: 680px)');
-  let language = read('ak-language') === 'ar' ? 'ar' : 'en';
+  const compactDiagram = matchMedia('(max-width: 1024px)');
+  let language = root.lang === 'ar' ? 'ar' : 'en';
+  const asset = value => /^(https?:|\/)/.test(value) ? value : (language==='ar'?'../':'')+value;
   let paused = read('ak-motion-paused') === 'true', lenis = null, motionContext = null, packetObserver = null;
   let apiTimer = 0, noticeTimer = 0, scrollFrame = 0, switching = false, lenisTick = null;
-  let paletteCommands = [], filteredCommands = [], selectedCommand = 0;
   let formValidated = false;
-  const dialogFocus = new WeakMap(), skipFocusRestore = new WeakSet();
+  let stackObserver = null, stackFrame = 0;
+  const dialogFocus = new WeakMap();
   const t = () => data[language], s = () => system[language];
   const moving = () => !reduced.matches && !paused;
   const chips = items => `<div class="chips">${items.map(v => `<span class="chip" dir="auto">${esc(v)}</span>`).join('')}</div>`;
 
   function renderName() {
     const name = t().name;
-    $('#kinetic-name').setAttribute('aria-label', name);
+    $('#kinetic-name').removeAttribute('aria-label');
     // Arabic shaping is preserved: animate whole joined words, never disconnected letters.
-    $('#kinetic-name').innerHTML = name.split(' ').map(word => language === 'ar'
+    $('#kinetic-name').innerHTML = `<span class="sr-only">${esc(name)}</span>` + name.split(' ').map(word => language === 'ar'
       ? `<span class="arabic-word" aria-hidden="true">${esc(word)}</span>`
       : `<span class="name-word" aria-hidden="true">${[...word].map(letter => `<span class="name-letter">${esc(letter)}</span>`).join('')}</span>`).join('');
   }
   function renderBento() {
     const c = t(), u = s();
-    const marquee = system.stack.map(v => `<span>${esc(v)}</span><b aria-hidden="true">✳</b>`).join('');
     $('#bento').innerHTML = `
-      <article class="bento-card bento-profile spotlight"><p class="eyebrow">${esc(u.systemLabel)}</p><h3>${esc(c.portraitNote)}</h3><p>${esc(c.profile)}</p><div class="facts-strip"><div class="fact"><strong dir="ltr" aria-label="3+"><span class="counter" data-count="3">3</span>+</strong><span>${esc(u.yearsLabel)}</span></div><div class="fact"><strong dir="ltr" aria-label="5"><span class="counter" data-count="5">5</span></strong><span>${esc(u.rankLabel)}</span></div></div></article>
-      <figure class="bento-card bento-photo"><img src="assets/adnan.webp" alt="${esc(c.portraitAlt)}" width="1100" height="733" loading="lazy" decoding="async"><figcaption class="photo-caption"><strong>${esc(c.name)}</strong><p>${esc(c.portraitLabel)}</p><p>${esc(c.portraitSub)}</p></figcaption></figure>
+      <article class="bento-card bento-profile spotlight"><p class="eyebrow">${esc(u.systemLabel)}</p><h3>${esc(c.portraitNote)}</h3><p>${esc(c.profile)}</p><div class="facts-strip"><div class="fact"><strong dir="ltr"><span class="counter" data-count="3">3</span>+</strong><span>${esc(u.yearsLabel)}</span></div><div class="fact"><strong dir="ltr"><span class="counter" data-count="5">5</span></strong><span>${esc(u.rankLabel)}</span></div></div></article>
+      <figure class="bento-card bento-photo"><img src="${asset('assets/adnan.webp')}" alt="${esc(c.portraitAlt)}" width="1100" height="733" loading="lazy" decoding="async"><figcaption class="photo-caption"><strong>${esc(c.name)}</strong><p>${esc(c.portraitLabel)}</p><p>${esc(c.portraitSub)}</p></figcaption></figure>
       <article class="bento-card bento-location spotlight"><p class="eyebrow">${esc(c.facts[0][0])}</p><div class="location-glyph" aria-hidden="true">⌖</div><p>${esc(c.facts[0][1])}</p></article>
       <article class="bento-card bento-languages spotlight"><p class="eyebrow">${esc(c.facts[1][0])}</p><div class="language-glyph" aria-hidden="true">Aa / ع</div><p>${esc(c.facts[1][1])}</p></article>
       <article class="bento-card bento-education spotlight"><p class="eyebrow">${esc(c.facts[2][0])}</p><h3>${esc(c.degree)}</h3><p>${esc(c.facts[2][1])}</p></article>
-      <article class="bento-card bento-current spotlight"><span class="current-symbol" aria-hidden="true">↗</span><div><p class="eyebrow">${esc(u.current)}</p><p>${esc(u.currentBody)}</p></div></article>
-      <div class="bento-card bento-marquee"><span class="marquee-label">${esc(u.stackLabel)}</span><div class="marquee-window"><div class="marquee-track"><div>${marquee}</div><div aria-hidden="true">${marquee}</div></div></div></div>`;
+      <article class="bento-card bento-current spotlight"><span class="current-symbol" aria-hidden="true">↗</span><div><p class="eyebrow">${esc(u.current)}</p><p>${esc(u.currentBody)}</p></div></article>`;
   }
   function diagram(index) {
-    const u = s(), small = mobile.matches, rtl = language === 'ar';
+    const u = s(), small = compactDiagram.matches, rtl = language === 'ar';
     const width = small ? 360 : 1000;
     let height, nodes, edges;
     if (index === 0) {
@@ -60,11 +60,6 @@
       nodes = small ? [[90,40,u.web],[270,40,u.flutter],[180,185,'Laravel API','',true],[90,350,'MySQL'],[270,350,u.search]]
         : [[130,55,u.web],[130,195,u.flutter],[500,125,'Laravel API','',true],[860,55,'MySQL'],[860,195,u.search]];
       edges = [[0,2],[1,2],[2,3],[2,4]];
-    } else if(index===3) {
-      height=small?425:255;
-      nodes=small?[[90,35,u.web],[270,35,u.flutter],[180,145,'Laravel REST API','',true],[90,255,'MySQL'],[270,255,'FastAPI'],[270,375,u.model]]
-        :[[105,55,u.web],[105,195,u.flutter],[370,125,'Laravel REST API','',true],[650,55,'MySQL'],[650,195,'FastAPI'],[895,195,u.model]];
-      edges=[[0,2],[1,2],[2,3],[2,4],[4,5]];
     } else {
       height = small ? 410 : 135;
       nodes = small ? [[180,40,u.school],[180,145,'Laravel REST API','',true],[180,250,'MySQL'],[180,365,u.roles]]
@@ -73,7 +68,7 @@
     }
     // Mirror coordinates and flow, not glyphs. Latin technical names remain readable.
     const positioned = nodes.map(([x,y,label,sub,main]) => [rtl ? width-x : x,y,label,sub,main]);
-    const nodeW = (n) => n[3] ? (small ? 300 : 250) : (small && (index===1||index===3) ? 155 : small ? 220 : 175);
+    const nodeW = (n) => n[3] ? (small ? 300 : 250) : (small && index===1 ? 155 : small ? 220 : 175);
     const paths = edges.map(([a,b], i) => {
       const from = positioned[a], to = positioned[b];
       let x1=from[0], y1=from[1], x2=to[0], y2=to[1], path;
@@ -95,16 +90,55 @@
       const text=multiline?u.searchLines.map((line,i)=>`<tspan x="${x}" y="${y-8+i*18}">${esc(line)}</tspan>`).join(''):esc(label);
       return `<g><rect class="diagram-node ${main?'main-node':''}" x="${x-w/2}" y="${y-27}" width="${w}" height="54" rx="2"/><text class="diagram-label ${main?'main-label':''}" x="${x}" y="${y-(sub?7:0)}" direction="${/[\u0600-\u06ff]/.test(label)?'rtl':'ltr'}">${text}</text>${sub?`<text class="diagram-label diagram-sub" x="${x}" y="${y+13}" direction="ltr">${esc(sub)}</text>`:''}</g>`;
     }).join('');
-    const description = [u.deepFlow,u.phoneFlow,u.schoolFlow,u.skillFlow][index];
-    return `<svg viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="diagram-title-${index} diagram-desc-${index}" class="system-diagram"><title id="diagram-title-${index}">${esc(index===3?u.stackTitle:t().projects[index].title)} — ${esc(u.architecture)}</title><desc id="diagram-desc-${index}">${esc(description)}</desc><defs><marker id="flow-arrow-${index}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="var(--muted)"/></marker></defs>${paths}${blocks}</svg>`;
+    const description = [u.deepFlow,u.phoneFlow,u.schoolFlow][index];
+    return `<svg viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="diagram-title-${index} diagram-desc-${index}" class="system-diagram"><title id="diagram-title-${index}">${esc(t().projects[index].title)} — ${esc(u.architecture)}</title><desc id="diagram-desc-${index}">${esc(description)}</desc><defs><marker id="flow-arrow-${index}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="var(--muted)"/></marker></defs>${paths}${blocks}</svg>`;
   }
   function renderSkills(){
-    const u=s();
-    $('#skills-overview').innerHTML=`<div class="core-skills">${u.coreSkills.map(skill=>`<article class="core-skill"><span class="core-label">${esc(u.core)}</span><h3 dir="auto">${esc(skill)}</h3></article>`).join('')}</div><div class="architecture stack-architecture"><div class="architecture-header"><span>${esc(u.stackTitle)}</span><span>${esc(u.stackNote)}</span></div><div class="diagram-holder" data-diagram="3">${diagram(3)}</div></div>`;
-    $('#skill-grid').innerHTML=t().skills.map(([title,items],i)=>`<article class="skill-row"><span class="skill-index">0${i+1} /</span><h3>${esc(title)}</h3>${chips(items)}</article>`).join('');
+    const core = new Set([0,1,3,5]);
+    $('#skill-grid').innerHTML=t().skills.map(([title,items],group)=>{
+      const list=items.map((item,i)=>`<li class="stack-item ${(group===0&&core.has(i))||(group===1&&i===6)||(group===2&&i===0)?'stack-core':''}"><span dir="auto">${esc(item)}</span></li>`).join('');
+      return `<article class="stack-row"><div class="stack-row-heading"><h3>${esc(title)}</h3><button class="stack-pause" type="button" aria-pressed="false" aria-label="${esc(s().stackPause)}"><span aria-hidden="true">Ⅱ</span></button></div><div class="stack-window"><div class="stack-track"><ul class="stack-list">${list}</ul></div></div></article>`;
+    }).join('');
+    $$('.stack-pause').forEach(button=>button.addEventListener('click',()=>{const row=button.closest('.stack-row'),stopped=row.classList.toggle('is-paused');button.setAttribute('aria-pressed',String(stopped));button.setAttribute('aria-label',stopped?s().stackResume:s().stackPause);button.firstElementChild.textContent=stopped?'▷':'Ⅱ';}));
+    const serviceIcons=[
+      '<rect x="3" y="4" width="26" height="24" rx="2"/><path d="M3 11h26M8 7.5h.1M12 7.5h.1M12 16l-4 4 4 4m8-8 4 4-4 4"/>',
+      '<rect x="11" y="11" width="10" height="10" rx="2"/><path d="M16 3v8m0 10v8M3 16h8m10 0h8M6 6l5 5m10 10 5 5M26 6l-5 5M11 21l-5 5"/>',
+      '<circle cx="16" cy="16" r="5"/><circle cx="5" cy="6" r="2"/><circle cx="27" cy="6" r="2"/><circle cx="5" cy="26" r="2"/><circle cx="27" cy="26" r="2"/><path d="M7 8l5 5m8 0 5-5M7 24l5-5m8 0 5 5"/>',
+      '<rect x="3" y="4" width="26" height="18" rx="2"/><path d="M11 28h10m-5-6v6M11 13l3 3 7-7"/>',
+      '<path d="M3 5h10a4 4 0 0 1 3 2 4 4 0 0 1 3-2h10v22H19a4 4 0 0 0-3 2 4 4 0 0 0-3-2H3ZM16 7v22M7 11h5m8 0h5M7 16h5m8 0h5"/>'
+    ];
+    const titlePatterns=language==='ar'?[/Laravel/,/REST API/,/الذكاء الاصطناعي/,/دعم فني/,/تدريب تقني/]:[/Laravel/,/REST API/,/AI model and LLM API/,/IT support/,/technical training/];
+    const places=t().coverage.match(language==='ar'?/حماة|حمص|دمشق|أونلاين \/ عن بُعد/g:/Hama|Homs|Damascus|online \/ remote/g)||[];
+    $('#services').innerHTML=`<div class="offer-heading"><div><p class="eyebrow">${esc(t().available)}</p><h3 id="offer-title">${esc(t().servicesTitle)}</h3></div><p class="offer-intro">${esc(t().serviceIntro)}</p></div><ul class="offer-grid" aria-labelledby="offer-title">${t().services.map((item,i)=>`<li class="offer-card spotlight"><div class="offer-card-top"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${serviceIcons[i]}</svg><span class="mono" aria-hidden="true">0${i+1}</span></div><h4>${esc(item.match(titlePatterns[i])?.[0]||item)}</h4><p>${esc(item)}</p></li>`).join('')}</ul><div class="coverage-strip"><div class="coverage-chips" aria-hidden="true">${[...new Set(places)].map(place=>`<span>${esc(place)}</span>`).join('')}</div><p class="coverage">${esc(t().coverage)}</p></div>`;
   }
   function renderExperience(){
     $('#timeline').innerHTML=t().experience.map(item=>`<article class="timeline-row ${item.highlight?'role-highlight':''}"><div class="timeline-meta"><p class="timeline-date">${esc(item.date)}</p>${item.status?`<span class="role-status">${esc(item.status)}</span>`:''}${item.type?`<span class="role-type">${esc(item.type)}</span>`:''}</div><div class="timeline-body"><h3>${esc(item.role)}</h3><p class="company">${safeURL(item.url)?`<a href="${safeURL(item.url)}" ${external}>${esc(item.company)} ↗</a>`:esc(item.company)}</p><p class="role-description">${esc(item.description)}</p>${item.bullets?`<p class="responsibilities-label">${esc(s().responsibilities)}</p><ul class="responsibilities">${item.bullets.map(line=>`<li>${esc(line)}</li>`).join('')}</ul>`:''}${item.tags?`<div class="responsibility-tags">${chips(item.tags)}</div>`:''}</div></article>`).join('');
+  }
+  function queueStack(){
+    if(!stackFrame)stackFrame=requestAnimationFrame(measureStack);
+  }
+  function setupStack(){
+    stackObserver?.disconnect();
+    if('ResizeObserver' in window){stackObserver=new ResizeObserver(queueStack);$$('.stack-window').forEach(el=>stackObserver.observe(el));}
+    queueStack();
+  }
+  function measureStack(){
+    stackFrame=0;
+    $$('.stack-row').forEach(row=>{
+      const viewport=$('.stack-window',row),track=$('.stack-track',row),original=$('.stack-list:not([aria-hidden])',row);
+      if(reduced.matches){row.classList.remove('is-looping');$$('[aria-hidden="true"].stack-list',track).forEach(el=>el.remove());delete row.dataset.cycleWidth;return;}
+      row.classList.add('is-looping');
+      // Each cycle includes its trailing gap, so adjacent copies have identical spacing.
+      const width=original.getBoundingClientRect().width,visible=viewport.clientWidth;
+      if(!width||!visible){row.classList.remove('is-looping');return;}
+      const copies=Math.max(3,Math.ceil(visible*2/width)+2);
+      if(row.dataset.cycleWidth===String(width)&&track.children.length===copies)return;
+      $$('.stack-list[aria-hidden]',track).forEach(el=>el.remove());
+      for(let i=1;i<copies;i++){const clone=original.cloneNode(true);clone.setAttribute('aria-hidden','true');track.append(clone);}
+      row.dataset.cycleWidth=String(width);
+      track.style.setProperty('--cycle-width',`${width}px`);
+      track.style.setProperty('--stack-duration',`${width/42}s`);
+    });
   }
   function isolateMixedText(){
     if(language!=='ar')return;
@@ -118,8 +152,8 @@
     const old = $$('.project-panel').map(el => el.open), c=t(), u=s();
     $('#project-list').innerHTML = c.projects.map((project,i) => {
       const config=data.projects[i];
-      const link=(url,label,placeholder) => safeURL(url) ? `<a href="${safeURL(url)}" ${external}>${esc(label)} ↗</a>` : `<span class="placeholder-link">${esc(placeholder)} ↗</span>`;
-      return `<details class="project-panel ${i===0?'featured':''}" ${old.length?old[i]?'open':'':i===0?'open':''}><summary class="project-summary"><span class="project-number">0${i+1}</span><div><p class="eyebrow">${esc(i===0?c.featured:c.projectLabel)}</p><h3>${esc(project.title)}</h3></div><span class="project-toggle" aria-hidden="true">+</span><span class="sr-only">${esc(u.expand)}</span></summary><div class="project-content"><div class="project-copy"><p>${esc(project.description)}</p><div>${chips(config.stack)}<div class="project-links">${link(config.live,c.live,c.livePlaceholder)}${link(config.github,c.code,c.githubPlaceholder)}</div></div></div><div class="architecture ${i===0?'tilt-card':''}"><div class="architecture-header"><span>${esc(u.architecture)}</span><span>${esc(u.architectureNote)}</span></div><div class="diagram-holder" data-diagram="${i}">${diagram(i)}</div></div><div class="project-shot ${config.image?'has-image':''}">${safeURL(config.image)?`<img src="${safeURL(config.image)}" alt="${esc(project.alt)}" width="1200" height="750" loading="lazy" decoding="async">`:`<span>${esc(c.screenshot)}</span><span class="shot-symbol" aria-hidden="true">[ + ]</span>`}</div></div></details>`;
+      const link=(url,label) => safeURL(url) ? `<a href="${safeURL(url)}" ${external}>${esc(label)} ↗</a>` : '';
+      return `<details class="project-panel ${i===0?'featured':''}" ${old.length?old[i]?'open':'':i===0?'open':''}><summary class="project-summary"><span class="project-number">0${i+1}</span><h3><span class="eyebrow">${esc(i===0?c.featured:c.projectLabel)}</span><span class="project-title">${esc(project.title)}</span></h3><span class="project-toggle" aria-hidden="true">+</span><span class="sr-only">${esc(u.expand)}</span></summary><div class="project-content"><div class="project-copy"><p>${esc(project.description)}</p><div>${chips(config.stack)}${config.liveUrl||config.repoUrl?`<div class="project-links">${link(config.liveUrl,c.live)}${link(config.repoUrl,c.code)}</div>`:''}</div></div><div class="architecture ${i===0?'tilt-card':''}"><div class="architecture-header"><span>${esc(u.architecture)}</span><span>${esc(u.architectureNote)}</span></div><div class="diagram-holder" data-diagram="${i}">${diagram(i)}</div></div>${safeURL(config.image)?`<div class="project-shot has-image"><img src="${asset(safeURL(config.image))}" alt="${esc(project.alt)}" width="1200" height="750" loading="lazy" decoding="async"></div>`:''}</div></details>`;
     }).join('');
     $$('.project-panel').forEach(panel => panel.addEventListener('toggle', () => {
       $('.project-summary .sr-only',panel).textContent=panel.open?s().collapse:s().expand;
@@ -137,41 +171,40 @@
     $('meta[property="og:locale"]').content=language==='ar'?'ar_SY':'en_US';
     $$('[data-t]').forEach(el => el.textContent=c[el.dataset.t]);
     $$('[data-s]').forEach(el => el.textContent=u[el.dataset.s]);
+    $$('[data-contact]').forEach(el=>{const kind=el.dataset.contact;el.href=kind==='email'?'mailto:'+system.email:kind==='phone'?'tel:'+system.phone.replace(/\s/g,''):system[kind];if(kind==='email')el.innerHTML=`<bdi dir="ltr">${esc(system.email)}</bdi> <span aria-hidden="true">↗</span>`;if(kind==='phone')el.textContent=system.phone.replace(/ /g,'\u00a0');});
+    $$('[data-publication-link]').forEach(el=>el.href='https://doi.org/'+system.publication.doi);
+    $('.doi').textContent='DOI: '+system.publication.doi;
     $('#navigation').innerHTML=c.nav.map(([id,title])=>`<a href="#${id}" aria-label="${esc(title)}"><span data-scramble="${esc(title)}" aria-hidden="true">${esc(title)}</span></a>`).join('');
     $('#navigation').setAttribute('aria-label',c.navLabel);
+    $('#language').setAttribute('href',language==='en'?'ar/index.html':'../index.html');
     $('#language').textContent=language==='en'?'العربية':'English';$('#language').lang=language==='en'?'ar':'en';
-    $('#language').setAttribute('aria-label',u.switchLanguage);
-    $('#command-open').setAttribute('aria-label',u.commands);
-    $('#command-open kbd').textContent=/Mac|iPhone|iPad/.test(navigator.platform)?'⌘ K':'Ctrl K';
-    $('#command-search').placeholder=u.palettePlaceholder;
+    $('#language').setAttribute('aria-label',language==='en'?'العربية — '+u.switchLanguage:'English — '+u.switchLanguage);
     $$('[data-close-dialog]').forEach(button => button.setAttribute('aria-label',u.close));
     $$('.brand-logo img,.citation-logo').forEach(img=>img.alt=u.logoAlt);
     $$('.brand-logo').forEach(link=>link.setAttribute('aria-label',c.name));
     $('#api-response').setAttribute('aria-label',u.apiResponse);
-    $('meta[property="og:image:alt"]').content=u.logoAlt;
+    $('meta[property="og:image:alt"]').content=c.name+' — '+c.title;
     renderName();renderBento();
     renderSkills();renderExperience();
     renderProjects();
     $('#achievements').innerHTML=c.achievements.map(([fact,description])=>`<div class="achievement"><strong><bdi dir="ltr">${esc(fact)}</bdi></strong><span>${esc(description)}</span></div>`).join('');
     $('#year').textContent=new Date().getFullYear();$('#form-status').textContent='';
-    closeMenu();themeLabel();motionLabel();buildCommands();runAPI();setupMotion();bindScramble();isolateMixedText();queueScroll();
+    closeMenu();themeLabel();motionLabel();runAPI();setupMotion();bindScramble();isolateMixedText();setupStack();queueScroll();
     if(formValidated)validateForm(false);
   }
   function themeLabel() {
     const light=root.dataset.theme==='light';
     $('#theme').textContent=light?'☾':'☼';$('#theme').setAttribute('aria-label',t()[light?'darkMode':'lightMode']);
-    $('meta[name="theme-color"]').content=light?'#f0ede3':'#11120f';
+    $('meta[name="theme-color"]').content=light?'#f5f2ec':'#141413';
   }
   function toggleTheme(){root.dataset.theme=root.dataset.theme==='dark'?'light':'dark';save('ak-theme',root.dataset.theme);themeLabel();}
-  function closeMenu(){ $('#navigation').classList.remove('open');$('#menu').setAttribute('aria-expanded','false');$('#menu').setAttribute('aria-label',t().openMenu); }
+  function closeMenu(){ $('#navigation').classList.remove('open');root.classList.remove('menu-open');$('#main').inert=false;$('footer').inert=false;$('#menu').setAttribute('aria-expanded','false');$('#menu').setAttribute('aria-label',t().openMenu); }
   async function switchLanguage() {
     if(switching)return;switching=true;
-    const swap=()=>{language=language==='en'?'ar':'en';save('ak-language',language);render();};
-    try {
-      if(moving() && document.startViewTransition){await document.startViewTransition(swap).finished;}
-      else if(moving() && $('#main').animate){await $('#main').animate([{opacity:1},{opacity:0}],{duration:120}).finished;swap();$('#main').animate([{opacity:0},{opacity:1}],{duration:220});}
-      else swap();
-    } finally {switching=false;window.ScrollTrigger?.refresh();lenis?.resize();}
+    save('ak-language',language==='en'?'ar':'en');
+    try{sessionStorage.setItem('ak-contact-draft',JSON.stringify(Object.fromEntries(new FormData($('#contact-form')))));}catch{}
+    if(moving() && $('#main').animate)await $('#main').animate([{opacity:1},{opacity:0}],{duration:140,fill:'forwards'}).finished;
+    location.assign($('#language').href);
   }
   function responseText(){
     const c=t();
@@ -212,7 +245,7 @@
       gsap.registerPlugin(ScrollTrigger);
       motionContext=gsap.context(()=>{
         gsap.from('.name-letter, .arabic-word',{yPercent:85,opacity:0,rotation:language==='ar'?0:4,stagger:language==='ar'?.12:.055,duration:.85,ease:'power3.out',clearProps:'transform,opacity'});
-        $$('.section-heading, .bento-card, .skills-overview, .skill-row, .timeline-row, .project-panel, .citation-card, .degree, .achievement').forEach(el=>{
+        $$('.section-heading, .bento-card, .stack-row, .services, .timeline-row, .project-panel, .citation-card, .degree, .achievement').forEach(el=>{
           gsap.from(el,{y:mobile.matches?12:28,opacity:0,duration:.7,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 93%',once:true},clearProps:'transform,opacity'});
         });
         $$('.counter').forEach(el=>{const value=+el.dataset.count;const proxy={n:0};gsap.to(proxy,{n:value,duration:1.1,ease:'power1.out',scrollTrigger:{trigger:el,start:'top 95%',once:true},onUpdate:()=>el.textContent=Math.round(proxy.n),onComplete:()=>el.textContent=value});});
@@ -237,24 +270,7 @@
     try{history.replaceState(null,'',`#${id}`);}catch{/* file preview */}
     target.setAttribute('tabindex','-1');target.focus({preventScroll:true});
   }
-  function buildCommands(){
-    const c=t(),u=s();
-    const sections=[...c.nav.map(([id,label])=>[id,label]),['publication',c.publicationTitle],['education',c.educationTitle]];
-    paletteCommands=sections.map(([id,label])=>({label:`${u.jump} · ${label}`,symbol:'↳',action:()=>goTo(id)}));
-    paletteCommands.push({label:u.switchLanguage,symbol:'文',action:switchLanguage},{label:u.toggleTheme,symbol:'◐',action:toggleTheme},{label:u.copyEmail,symbol:'@',action:()=>copyText(system.email)},{label:u.openGithub,symbol:'↗',action:()=>window.open(system.github,'_blank','noopener,noreferrer')},{label:u.openWhatsApp,symbol:'↗',action:()=>window.open(system.whatsapp,'_blank','noopener,noreferrer')});
-    filterCommands();
-  }
-  function filterCommands(){
-    const query=$('#command-search').value.trim().toLocaleLowerCase();
-    filteredCommands=paletteCommands.filter(command=>command.label.toLocaleLowerCase().includes(query));selectedCommand=0;renderCommands();
-  }
-  function renderCommands(){
-    $('#command-results').innerHTML=filteredCommands.length?filteredCommands.map((command,i)=>`<div role="option" id="command-${i}" class="command-option" data-command="${i}" aria-selected="${i===selectedCommand}"><span>${esc(command.label)}</span><span aria-hidden="true">${command.symbol}</span></div>`).join(''):`<p class="no-results">${esc(s().noResults)}</p>`;
-    if(filteredCommands.length)$('#command-search').setAttribute('aria-activedescendant',`command-${selectedCommand}`);else $('#command-search').removeAttribute('aria-activedescendant');
-  }
   function showDialog(dialog){dialogFocus.set(dialog,document.activeElement);lenis?.stop();root.classList.add('dialog-open');dialog.showModal();}
-  function openPalette(){closeMenu();$('#command-search').value='';filterCommands();showDialog($('#command-dialog'));$('#command-search').focus();}
-  function executeCommand(index){const command=filteredCommands[index];if(!command)return;skipFocusRestore.add($('#command-dialog'));$('#command-dialog').close();command.action();}
   function notify(text){clearTimeout(noticeTimer);$('#notification').textContent=text;$('#notification').classList.add('visible');noticeTimer=setTimeout(()=>$('#notification').classList.remove('visible'),3000);}
   async function copyText(text){
     try{if(!navigator.clipboard?.writeText)throw new Error('Clipboard unavailable');await navigator.clipboard.writeText(text);notify(s().copied);}
@@ -293,23 +309,17 @@
   },{passive:true});
   document.documentElement.addEventListener('pointerleave',()=>{pointer.x=pointer.y=-100;if(activeMagnet)activeMagnet.style.transform='';if(activeTilt)activeTilt.style.transform='';activeMagnet=activeTilt=activeSpotlight=null;if(!pointerFrame)pointerFrame=requestAnimationFrame(pointerTick);});
 
-  $('#theme').addEventListener('click',toggleTheme);$('#language').addEventListener('click',switchLanguage);$('#run-api').addEventListener('click',runAPI);
-  $('#menu').addEventListener('click',()=>{const open=$('#navigation').classList.toggle('open');$('#menu').setAttribute('aria-expanded',String(open));$('#menu').setAttribute('aria-label',t()[open?'closeMenu':'openMenu']);});
+  $('#theme').addEventListener('click',toggleTheme);$('#language').addEventListener('click',event=>{event.preventDefault();switchLanguage();});$('#run-api').addEventListener('click',runAPI);
+  $('#menu').addEventListener('click',()=>{if($('#navigation').classList.contains('open')){closeMenu();return;}$('#navigation').classList.add('open');root.classList.add('menu-open');$('#main').inert=true;$('footer').inert=true;$('#menu').setAttribute('aria-expanded','true');$('#menu').setAttribute('aria-label',t().closeMenu);$('#navigation a').focus();});
   $('#motion-toggle').addEventListener('click',()=>{paused=!paused;save('ak-motion-paused',String(paused));setupMotion();runAPI();});
-  $('#command-open').addEventListener('click',openPalette);$('#command-search').addEventListener('input',filterCommands);
-  $('#command-results').addEventListener('click',event=>{const option=event.target.closest('[data-command]');if(option)executeCommand(+option.dataset.command);});
-  $('#command-search').addEventListener('keydown',event=>{
-    if(['ArrowDown','ArrowUp'].includes(event.key)&&filteredCommands.length){event.preventDefault();selectedCommand=(selectedCommand+(event.key==='ArrowDown'?1:-1)+filteredCommands.length)%filteredCommands.length;renderCommands();$(`#command-${selectedCommand}`).scrollIntoView({block:'nearest'});}
-    if(event.key==='Enter'){event.preventDefault();executeCommand(selectedCommand);}
-  });
   document.addEventListener('keydown',event=>{
-    if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='k'){event.preventDefault();if($('#command-dialog').open)$('#command-dialog').close();else if(!$('#copy-dialog').open)openPalette();}
     if(event.key==='Escape'&&$('#navigation').classList.contains('open')){closeMenu();$('#menu').focus();}
+    if(event.key==='Tab'&&$('#navigation').classList.contains('open')){const controls=$$('.header a,.header button').filter(el=>el.getClientRects().length&&!el.disabled),first=controls[0],last=controls.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}}
   });
   $$('dialog').forEach(dialog=>{
     $('[data-close-dialog]',dialog).addEventListener('click',()=>dialog.close());
     dialog.addEventListener('click',event=>{if(event.target!==dialog)return;const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close();});
-    dialog.addEventListener('close',()=>{const skip=skipFocusRestore.has(dialog);skipFocusRestore.delete(dialog);if($$('dialog').some(el=>el.open))return;root.classList.remove('dialog-open');lenis?.start();cursorVisibility();const previous=dialogFocus.get(dialog);if(!skip&&previous?.isConnected)previous.focus({preventScroll:true});});
+    dialog.addEventListener('close',()=>{if($$('dialog').some(el=>el.open))return;root.classList.remove('dialog-open');lenis?.start();cursorVisibility();const previous=dialogFocus.get(dialog);if(previous?.isConnected)previous.focus({preventScroll:true});});
   });
   document.addEventListener('click',event=>{
     const anchor=event.target.closest('a[href^="#"]');
@@ -341,9 +351,12 @@
     // Native target=_blank navigation preserves the user gesture; no message is sent automatically.
   });
   addEventListener('scroll',queueScroll,{passive:true});addEventListener('resize',queueScroll,{passive:true});
+  matchMedia('(max-width: 850px)').addEventListener('change',()=>closeMenu());
   document.addEventListener('visibilitychange',()=>{syncDiagrams();if(document.hidden)clearTimeout(apiTimer);else if($('#run-api').disabled)runAPI();});
-  reduced.addEventListener('change',()=>{setupMotion();runAPI();});finePointer.addEventListener('change',cursorVisibility);
+  reduced.addEventListener('change',()=>{setupMotion();runAPI();queueStack();});finePointer.addEventListener('change',cursorVisibility);
   mobile.addEventListener('change',()=>{$$('.diagram-holder').forEach(holder=>holder.innerHTML=diagram(+holder.dataset.diagram));setupMotion();});
+  compactDiagram.addEventListener('change',()=>{$$('.diagram-holder').forEach(holder=>holder.innerHTML=diagram(+holder.dataset.diagram));syncDiagrams();});
   render();
-  document.fonts?.ready.then(()=>{window.ScrollTrigger?.refresh();lenis?.resize();queueScroll();});
+  try{const draft=JSON.parse(sessionStorage.getItem('ak-contact-draft')||'null');if(draft){for(const field of ['name','email','message'])$('#contact-form').elements[field].value=draft[field]||'';sessionStorage.removeItem('ak-contact-draft');}}catch{}
+  document.fonts?.ready.then(()=>{queueStack();window.ScrollTrigger?.refresh();lenis?.resize();queueScroll();});
 })();

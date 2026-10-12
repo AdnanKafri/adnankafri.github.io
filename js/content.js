@@ -1,10 +1,7 @@
-/* Portfolio content: edit EN/AR copy, project assets and links here. */
 window.PORTFOLIO = {
   "projects": [
     {
       "image": null,
-      "live": null,
-      "github": null,
       "stack": [
         "Laravel",
         "FastAPI",
@@ -13,33 +10,35 @@ window.PORTFOLIO = {
         "EfficientNet-B4",
         "BiLSTM",
         "MFCC"
-      ]
+      ],
+      "liveUrl": null,
+      "repoUrl": null
     },
     {
       "image": null,
-      "live": null,
-      "github": null,
       "stack": [
         "Laravel",
         "MySQL",
         "Flutter",
         "Generative AI API"
-      ]
+      ],
+      "liveUrl": null,
+      "repoUrl": null
     },
     {
       "image": null,
-      "live": null,
-      "github": null,
       "stack": [
         "Laravel",
         "MySQL",
         "REST API"
-      ]
+      ],
+      "liveUrl": null,
+      "repoUrl": null
     }
   ],
   "en": {
-    "metaTitle": "Adnan Kafri — Laravel Backend Developer & AI Systems",
-    "metaDescription": "Adnan Kafri, backend-focused Computer Engineer in Hama, Syria. Laravel, REST APIs, relational databases and AI-integrated web platforms. Available for remote freelance work.",
+    "metaTitle": "Adnan Kafri | Laravel Developer & IT Support | Hama, Syria",
+    "metaDescription": "Adnan Kafri, Laravel backend developer in Hama, Syria. Freelance website development, REST APIs, AI integration and IT support, available for remote work.",
     "skip": "Skip to content",
     "name": "Adnan Kafri",
     "intro": "COMPUTER ENGINEER · BACKEND DEVELOPER",
@@ -94,7 +93,7 @@ window.PORTFOLIO = {
         "Computer Engineering · Excellent classification"
       ]
     ],
-    "skillsLabel": "02 / TECHNICAL SKILLS",
+    "skillsLabel": "02 / APPLICATION STACK",
     "skillsTitle": "Skills",
     "skills": [
       [
@@ -203,7 +202,7 @@ window.PORTFOLIO = {
         "date": "Aug 2024 — Jan 2025",
         "role": "Backend Developer Intern",
         "company": "Extend for Digital Solutions & Marketing · Hama",
-        "description": "Developed Laravel and CodeIgniter backend modules and debugged features for Motobox, a local food delivery platform. Built and optimized REST APIs and MySQL operations alongside senior developers."
+        "description": "Developed Laravel and CodeIgniter backend modules and debugged features for Motobox, a food delivery platform. Built and optimized REST APIs and MySQL operations alongside senior developers."
       }
     ],
     "projectsLabel": "04 / SELECTED PROJECTS",
@@ -211,9 +210,6 @@ window.PORTFOLIO = {
     "projectsIntro": "Laravel platforms, web and mobile APIs, and applied deep learning.",
     "featured": "FEATURED / GRADUATION PROJECT",
     "projectLabel": "WEB PLATFORM",
-    "screenshot": "ADD SCREENSHOT HERE",
-    "livePlaceholder": "ADD LIVE LINK",
-    "githubPlaceholder": "ADD GITHUB LINK",
     "live": "Live project",
     "code": "Source code",
     "projects": [
@@ -278,11 +274,21 @@ window.PORTFOLIO = {
     "darkMode": "Switch to dark mode",
     "openMenu": "Open navigation",
     "closeMenu": "Close navigation",
-    "navLabel": "Main navigation"
+    "navLabel": "Main navigation",
+    "servicesTitle": "What I offer",
+    "services": [
+      "Laravel website and web application development",
+      "REST API design and backend development",
+      "AI model and LLM API integration into web platforms",
+      "School and organization IT support and website maintenance",
+      "Practical technical training sessions"
+    ],
+    "coverage": "Based in Hama, Syria. Available for clients across Syria, including Hama, Homs and Damascus, and online / remote.",
+    "serviceIntro": "Freelance web developer and IT employee supporting school systems, with a focus on reliable Laravel applications."
   },
   "ar": {
-    "metaTitle": "عدنان كفري — مطوّر Laravel وتكامل الذكاء الاصطناعي",
-    "metaDescription": "عدنان كفري، مهندس حاسوب من حماة، متخصص في تطوير الخلفية البرمجية باستخدام Laravel وواجهات REST API وقواعد البيانات وتكامل الذكاء الاصطناعي. متاح للعمل الحر عن بُعد.",
+    "metaTitle": "عدنان كفري | مطور ويب ولارافيل ودعم فني في حماة، سوريا",
+    "metaDescription": "عدنان كفري، مطور ويب ولارافيل ومبرمج باك إند في حماة، سوريا. تطوير مواقع فريلانس وواجهات REST API، دمج الذكاء الاصطناعي ودعم فني للمؤسسات، أونلاين وعن بعد.",
     "skip": "انتقل إلى المحتوى الرئيسي",
     "name": "عدنان كفري",
     "intro": "مهندس حاسوب · مطوّر الخلفية البرمجية",
@@ -366,7 +372,7 @@ window.PORTFOLIO = {
           "EfficientNet-B4",
           "MFCC",
           "استخراج الخصائص",
-          "دمج واجهات الذكاء الاصطناعي التوليدي وLLM",
+          "دمج واجهات الذكاء الاصطناعي التوليدي و LLM",
           "التطوير بمساعدة الذكاء الاصطناعي"
         ]
       ],
@@ -454,9 +460,6 @@ window.PORTFOLIO = {
     "projectsIntro": "منصات Laravel، وواجهات برمجية للويب والهواتف، وتطبيقات التعلم العميق.",
     "featured": "مشروع مميز / مشروع التخرج",
     "projectLabel": "منصة ويب",
-    "screenshot": "أضف لقطة شاشة للمشروع",
-    "livePlaceholder": "أضف رابط العرض المباشر",
-    "githubPlaceholder": "أضف رابط GitHub",
     "live": "عرض المشروع",
     "code": "الشيفرة المصدرية",
     "projects": [
@@ -521,7 +524,17 @@ window.PORTFOLIO = {
     "darkMode": "التبديل إلى المظهر الداكن",
     "openMenu": "فتح قائمة التنقل",
     "closeMenu": "إغلاق قائمة التنقل",
-    "navLabel": "التنقل الرئيسي"
+    "navLabel": "التنقل الرئيسي",
+    "servicesTitle": "الخدمات التي أقدمها",
+    "services": [
+      "تصميم وبرمجة مواقع وتطبيقات ويب باستخدام Laravel",
+      "تصميم واجهات REST API وتطوير الأنظمة الخلفية",
+      "دمج نماذج الذكاء الاصطناعي وواجهات LLM في منصات الويب",
+      "دعم فني وصيانة مواقع للمدارس والمؤسسات",
+      "جلسات تدريب تقني عملي"
+    ],
+    "coverage": "مقيم في حماة، سوريا. متاح للعمل مع عملاء في أنحاء سوريا، بما فيها حماة وحمص ودمشق، وأونلاين / عن بُعد.",
+    "serviceIntro": "مطور مواقع فريلانس وموظف IT أدعم أنظمة المدارس، مع التركيز على تطبيقات لارافيل الموثوقة."
   },
   "system": {
     "email": "adnanzz444@gmail.com",
@@ -543,7 +556,7 @@ window.PORTFOLIO = {
       "systemLabel": "Profile",
       "explore": "View profile",
       "consoleLabel": "PROFILE ENDPOINT",
-      "consoleNote": "Interactive profile · local demonstration",
+      "consoleNote": "Professional profile",
       "run": "Run again",
       "running": "Running request…",
       "ready": "Profile response ready.",
@@ -583,40 +596,20 @@ window.PORTFOLIO = {
       "copyCitation": "Copy citation",
       "copied": "Copied to clipboard.",
       "copyFailed": "Automatic copy unavailable. Select and copy the text below.",
-      "palette": "Command menu",
-      "palettePlaceholder": "Find a section or action…",
-      "paletteHelp": "↑ ↓ navigate · Enter select · Esc close",
-      "noResults": "No matching commands.",
       "close": "Close",
-      "jump": "Jump to",
       "switchLanguage": "Switch to Arabic",
-      "toggleTheme": "Toggle theme",
       "copyEmail": "Copy email",
-      "openGithub": "Open GitHub",
-      "commands": "Open command menu",
       "motionPause": "Pause motion",
       "motionResume": "Resume motion",
       "emailLabel": "Email",
       "phoneLabel": "Phone",
       "footerSystem": "Hama, Syria · Remote work",
       "noscript": "The full portfolio is readable without JavaScript. Enable it for language switching and interactive features.",
-      "core": "Core",
-      "coreSkills": [
-        "Laravel",
-        "PHP",
-        "REST API design",
-        "MySQL",
-        "FastAPI",
-        "AI integration"
-      ],
-      "stackTitle": "Web, API, data & AI integration",
-      "stackNote": "Technologies used across the projects below.",
       "ongoing": "Ongoing",
       "responsibilities": "Responsibilities",
       "logoAlt": "Adnan Kafri logo",
       "whatsapp": "WhatsApp",
       "sendWhatsApp": "Send via WhatsApp",
-      "openWhatsApp": "Open WhatsApp",
       "openingWhatsApp": "Opening WhatsApp… Review the draft in WhatsApp before sending.",
       "whatsappHint": "WhatsApp opens a prefilled message for you to review and send.",
       "whatsappTemplate": "Hello Adnan, my name is {name}.\nMy email: {email}.\nI'd like to discuss:\n{message}",
@@ -627,7 +620,8 @@ window.PORTFOLIO = {
       "fixFields": "Please check the highlighted fields.",
       "motionReduced": "Reduced motion enabled",
       "apiResponse": "Profile response in JSON",
-      "skillFlow": "Web and Flutter clients connect to Laravel REST APIs. Laravel integrates with MySQL and FastAPI for deep learning model inference."
+      "stackPause": "Pause this row",
+      "stackResume": "Resume this row"
     },
     "ar": {
       "concept": "تطوير الخلفية البرمجية باستخدام Laravel",
@@ -635,7 +629,7 @@ window.PORTFOLIO = {
       "systemLabel": "الملف المهني",
       "explore": "عرض الملف المهني",
       "consoleLabel": "واجهة الملف المهني",
-      "consoleNote": "عرض تفاعلي محلي لبيانات الملف المهني",
+      "consoleNote": "الملف المهني",
       "run": "إعادة التشغيل",
       "running": "جارٍ تنفيذ الطلب…",
       "ready": "تم عرض بيانات الملف المهني.",
@@ -675,17 +669,9 @@ window.PORTFOLIO = {
       "copyCitation": "نسخ المرجع",
       "copied": "تم النسخ إلى الحافظة.",
       "copyFailed": "تعذّر النسخ التلقائي. يمكنك تحديد النص ونسخه يدوياً.",
-      "palette": "قائمة الأوامر",
-      "palettePlaceholder": "ابحث عن قسم أو إجراء…",
-      "paletteHelp": "↑ ↓ للتنقل · Enter للتنفيذ · Esc للإغلاق",
-      "noResults": "لا توجد نتائج مطابقة.",
       "close": "إغلاق",
-      "jump": "انتقل إلى",
       "switchLanguage": "التبديل إلى الإنجليزية",
-      "toggleTheme": "تبديل المظهر",
       "copyEmail": "نسخ البريد الإلكتروني",
-      "openGithub": "فتح GitHub",
-      "commands": "فتح قائمة الأوامر",
       "motionPause": "إيقاف الحركة",
       "motionResume": "استئناف الحركة",
       "motionReduced": "الحركة المخفّضة مفعّلة",
@@ -693,23 +679,11 @@ window.PORTFOLIO = {
       "phoneLabel": "الهاتف",
       "footerSystem": "حماة، سوريا · العمل عن بُعد",
       "noscript": "يمكن قراءة ملف الأعمال دون JavaScript. يلزم تفعيله لتبديل اللغة واستخدام الميزات التفاعلية.",
-      "core": "أساسي",
-      "coreSkills": [
-        "Laravel",
-        "PHP",
-        "تصميم REST API",
-        "MySQL",
-        "FastAPI",
-        "تكامل الذكاء الاصطناعي"
-      ],
-      "stackTitle": "تكامل الويب والواجهات البرمجية والبيانات والذكاء الاصطناعي",
-      "stackNote": "تقنيات مستخدمة في المشاريع المعروضة أدناه.",
       "ongoing": "مستمر",
       "responsibilities": "المسؤوليات",
       "logoAlt": "شعار عدنان كفري",
       "whatsapp": "واتساب",
       "sendWhatsApp": "إرسال عبر واتساب",
-      "openWhatsApp": "فتح واتساب",
       "openingWhatsApp": "جارٍ فتح واتساب… راجع الرسالة في واتساب قبل إرسالها.",
       "whatsappHint": "يفتح واتساب برسالة جاهزة للمراجعة والإرسال.",
       "whatsappTemplate": "مرحباً عدنان، اسمي {name}.\nبريدي الإلكتروني: {email}.\nأود مناقشة التفاصيل التالية:\n{message}",
@@ -719,8 +693,17 @@ window.PORTFOLIO = {
       "requiredMessage": "يرجى إضافة تفاصيل المشروع أو فرصة العمل.",
       "fixFields": "يرجى مراجعة الحقول المشار إليها.",
       "apiResponse": "بيانات الملف المهني بصيغة JSON",
-      "skillFlow": "تتصل تطبيقات الويب وFlutter بواجهات Laravel REST API. تتكامل Laravel مع MySQL وFastAPI لتشغيل نماذج التعلم العميق."
+      "stackPause": "إيقاف هذا الصف مؤقتًا",
+      "stackResume": "استئناف حركة هذا الصف"
     },
-    "whatsapp": "https://wa.me/963952749458"
+    "whatsapp": "https://wa.me/963952749458",
+    "publication": {
+      "doi": "10.11648/j.aas.20261101.11",
+      "date": "2026-01",
+      "coauthor": "Samar Al-Halabi",
+      "journal": "Advances in Applied Sciences",
+      "volume": "11",
+      "issue": "1"
+    }
   }
 };

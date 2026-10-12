@@ -1,0 +1,74 @@
+[
+  {
+    "field": "system.en.palette",
+    "operation": "removed"
+  },
+  {
+    "field": "system.en.palettePlaceholder",
+    "operation": "removed"
+  },
+  {
+    "field": "system.en.paletteHelp",
+    "operation": "removed"
+  },
+  {
+    "field": "system.en.noResults",
+    "operation": "removed"
+  },
+  {
+    "field": "system.en.jump",
+    "operation": "removed"
+  },
+  {
+    "field": "system.en.toggleTheme",
+    "operation": "removed"
+  },
+  {
+    "field": "system.en.openGithub",
+    "operation": "removed"
+  },
+  {
+    "field": "system.en.commands",
+    "operation": "removed"
+  },
+  {
+    "field": "system.en.openWhatsApp",
+    "operation": "removed"
+  },
+  {
+    "field": "system.ar.palette",
+    "operation": "removed"
+  },
+  {
+    "field": "system.ar.palettePlaceholder",
+    "operation": "removed"
+  },
+  {
+    "field": "system.ar.paletteHelp",
+    "operation": "removed"
+  },
+  {
+    "field": "system.ar.noResults",
+    "operation": "removed"
+  },
+  {
+    "field": "system.ar.jump",
+    "operation": "removed"
+  },
+  {
+    "field": "system.ar.toggleTheme",
+    "operation": "removed"
+  },
+  {
+    "field": "system.ar.openGithub",
+    "operation": "removed"
+  },
+  {
+    "field": "system.ar.commands",
+    "operation": "removed"
+  },
+  {
+    "field": "system.ar.openWhatsApp",
+    "operation": "removed"
+  }
+]

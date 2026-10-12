@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://adnankafri.github.io/sitemap.xml
